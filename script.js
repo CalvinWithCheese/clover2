@@ -43,6 +43,7 @@ function buildToc() {
     const eraId = era.id;
     const eraTitle = era.getAttribute('data-era-title') || eraId;
     const tocEraId = `toc-${eraId}-segments`;
+    const segmentsRoot = document.getElementById(`${eraId}-content`);
 
     const eraLi = document.createElement('li');
 
@@ -64,6 +65,21 @@ function buildToc() {
 
     eraHeader.appendChild(eraToggle);
     eraHeader.appendChild(eraLink);
+
+    const segmentsList = document.createElement('ul');
+    segmentsList.id = tocEraId;
+    segmentsList.className = 'toc-segment-list';
+    segmentsList.hidden = true;
+
+    segmentsRoot?.querySelectorAll('.segment').forEach((segment) => {
+      const segmentLi = document.createElement('li');
+      const segmentLink = document.createElement('a');
+      segmentLink.className = 'toc-link';
+      segmentLink.href = `#${segment.id}`;
+      segmentLink.textContent = segment.getAttribute('data-segment-title') || segment.id;
+      segmentLi.appendChild(segmentLink);
+      segmentsList.appendChild(segmentLi);
+    });
 
     eraLi.appendChild(eraHeader);
     eraLi.appendChild(segmentsList);
